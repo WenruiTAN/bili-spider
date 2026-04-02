@@ -120,7 +120,7 @@ with main_col:
             "1. 粘贴你的 Cookie (可选)", 
             value=st.session_state.user_cookie,
             height=80, 
-            placeholder="留空则尝试公共通道..."
+            placeholder="留空则尝试公共通道。如搜索失败请填入自己账号的Cookies..."
         )
         
         with st.expander("🔍 不知道怎么拿 Cookie？点击看保姆级教程"):
