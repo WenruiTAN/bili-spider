@@ -8,6 +8,8 @@ import re
 
 # --- 网页基础配置 ---
 st.set_page_config(page_title="B站精准数据导出工具", layout="wide")
+st.title("📺 Bilibili 搜索数据导出助手")
+st.markdown("支持**自动去重**、**精准清洗**及**Excel原生格式导出**。")
 
 # 💡【开发者提示】在这里填入你抓好的有效Cookie，小白同事没填时会自动调用它
 DEFAULT_COOKIE = "在此粘贴你的Cookie"
