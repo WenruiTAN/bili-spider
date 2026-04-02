@@ -128,8 +128,19 @@ with main_col:
             placeholder="留空则尝试公共通道..."
         )
         
-        with st.expander("🔍 如何获取 Cookie？"):
-            st.markdown("登录B站 -> F12 -> 网络 (Network) -> 刷新页面 -> 找第一个 nav 请求 -> Headers -> 复制 Cookie 后的整串文字。")
+        with st.expander("🔍 点击查看：超详细的 Cookie 获取教程", expanded=False):
+            st.markdown("""
+            ### 4步拿走 Cookie：
+            1. **登录**：在电脑打开 B 站并登录。
+            2. **检查**：在网页空白处**右键 -> 检查** (或按 F12)。
+            3. **刷新**：点顶部菜单的 **网络 (Network)**，然后 **刷新页面 (F5)**。
+            4. **复制**：在左侧列表找 **`nav`** 点击，右侧找 **`cookie:`** 后面那一长串文字。
+            
+            ---
+            **💡 小贴士**：
+            * 如果没看到 `nav`，可以在搜索框输入 `nav` 过滤一下。
+            * 复制时记得从 `_uuid=...` 一直拉到最后，全部都要。
+            """)
             
         # 搜索参数区
         col1, col2 = st.columns([2, 1])
