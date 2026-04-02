@@ -146,7 +146,7 @@ with main_col:
         st.divider()
         
         # 使用统一字号的配置中心标题
-        st.markdown('<div class="custom-header">⚙️ 配置中心</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header">⚙️ 采集配置</div>', unsafe_allow_html=True)
         
         # C. Cookie 输入与教程
         st.session_state.user_cookie = st.text_area(
