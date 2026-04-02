@@ -79,7 +79,6 @@ def run_bili_spider(kw, limit_pg, ck):
     return df
 
 # --- 4. 界面布局 ---
-# --- 4. 界面布局 ---
 # 注入自定义 CSS 以实现“蓝色便签纸”效果和统一标题
 st.markdown("""
     <style>
@@ -114,7 +113,7 @@ _, main_col, _ = st.columns([1, 2, 1])
 
 with main_col:
     if not st.session_state.clicked:
-        st.markdown('<div class="custom-header">📺 Bilibili 搜索数据采集工具</div>', unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>📺 Bilibili 搜索数据采集工具</h1>", unsafe_allow_html=True)
         
         # A. 工具简介（蓝色便签纸样式）
         st.markdown("""
