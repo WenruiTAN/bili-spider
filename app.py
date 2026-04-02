@@ -102,7 +102,7 @@ with main_col:
             它只找标题里完全符合关键词的视频，干扰项会被自动过滤。
             
             ### 📖 操作指南
-            1. **填入 Cookie**：在下方框内粘贴（下方有获取教程）。**注意：只要你不点 B 站的“退出登录”，这串代码就可以一直用。**
+            1. **填入 Cookie**：在下方框内粘贴（下方有获取教程）。
             2. **输入关键词**：直接输入你想搜的名字（如 Audrey Hobert）。
             3. **设定上限**：设一个最大爬取页数（比如 50 页），搜完它会自动停。
             4. **下载结果**：等进度条跑完，点击下载 Excel 即可。
@@ -125,7 +125,7 @@ with main_col:
             "1. 粘贴你的 Cookie (可选)", 
             value=st.session_state.user_cookie,
             height=100, 
-            placeholder="留空则尝试公共通道..."
+            placeholder="只要不点 B 站的“退出登录”，这串Cookie就可以一直使用，搜索其他关键词时也不用换。"
         )
         
         with st.expander("🔍 点击查看：超详细的 Cookie 获取教程", expanded=False):
