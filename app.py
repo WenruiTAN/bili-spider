@@ -10,7 +10,7 @@ import re
 st.set_page_config(page_title="B站数据精准抓取工具", layout="wide", page_icon="📺")
 
 # 💡 开发者预设 Cookie（若有）
-DEFAULT_COOKIE = "在此粘贴你的默认Cookie"
+DEFAULT_COOKIE = "buvid3=4FFE90A5-DB8E-89DB-3AA7-023812EB92D330991infoc; b_nut=1765379530; _uuid=9AFD3B64-11079-7951-81FC-B105FDCE10DDB447515infoc; buvid4=ABEC55F1-734C-B783-DFEC-4969D35C23A949573-025121023-5yW1q3nj6f5c0VmjaSw8pQ%3D%3D; rpdid=|(k~|YR)R)lk0J'u~YlJ~ml)Y; theme-tip-show=SHOWED; theme-avatar-tip-show=SHOWED; theme-switch-show=SHOWED; hit-dyn-v2=1; fingerprint=4e8509a82836e5445a31ca7fcccc4da8; buvid_fp_plain=undefined; buvid_fp=4e8509a82836e5445a31ca7fcccc4da8; PVID=1; CURRENT_BLACKGAP=0; bp_t_offset_36630361=1183601126017073152; CURRENT_QUALITY=80; share_source_origin=copy_web; CURRENT_FNVAL=2000; bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzUzNzc4MjYsImlhdCI6MTc3NTExODU2NiwicGx0IjotMX0.xcywLCJR5sabt-13Pw7is5dQI3dq48ClJ9_DfDbyDYs; bili_ticket_expires=1775377766; bp_t_offset_503461703=1186617460074217472; SESSDATA=83d9f394%2C1790671343%2Cf884a%2A42CjBk6i1yXOllcacN5NQDB6Wa4NYRePjX7YszFRC0-QApZuV1jdviVZfcvjQtRsZK0YQSVnNrSG5wS0F6R0QweUJ3NTdidDFFQ1U0aFJJbHJlSllkR1VRMW1XVzNiV1p0NHgxa2VQR2lLZDVDbjJNUG5EaTE1WGpvalIzVkNWd2h3TjVTMHdDVVlRIIEC; bili_jct=3f9891a1a2eb711111ee7a08b0489e68; DedeUserID=3706960658565980; DedeUserID__ckMd5=110ca6b208d10335; sid=6r2edjrc; bsource=search_bing; bp_t_offset_3706960658565980=1186643629309952000; home_feed_column=4; browser_resolution=481-828; b_lsid=D2F501BB_19D4E39A067"
 
 # --- 2. 初始化 Session State ---
 if 'clicked' not in st.session_state:
@@ -84,16 +84,14 @@ _, main_col, _ = st.columns([1, 2, 1])
 
 with main_col:
     if not st.session_state.clicked:
-        st.title("📺 Bilibili 搜索数据导出助手")
+        st.title("📺 Bilibili 搜索数据采集工具")
         
         # A. 工具简介（直接展示）
         st.markdown("""
         ### 🛠️ 工具简介
-        这是一个专门帮大家**在 B 站“捞数据”**的省力工具。
+        这是一个专门帮大家在 B 站“捞数据”的省力工具。
         
-        * **找得准**：只找标题里完全符合关键词的视频，自动过滤无关干扰。
-        * **不费劲**：不用数页数，程序会自动搜到最后一页并收工。
-        * **好上手**：导出 Excel 是**“纯数字版”**，点一下表头就能直接排序。
+        它只找标题里完全符合关键词的视频，自动过滤无关干扰。
         """)
 
         # B. 操作指南（折叠框）
@@ -102,8 +100,8 @@ with main_col:
             with c_guide:
                 st.markdown("""
                 **操作步骤：**
-                1. **填入 Cookie**：在下方框内粘贴。**注意：只要不点“退出登录”，这串代码就可以一直用，下次搜别人也不用换。**
-                2. **输入关键词**：输入你想搜的名字（如 `Audrey Hobert`）。
+                1. **填入 Cookie**：在下方框内粘贴。只要不点“退出登录”，这个CooKie就可以一直用，下次搜其他关键词时也不用换。
+                2. **输入关键词**：输入你想搜的关键词。
                 3. **设定上限**：设一个最大爬取页数（建议 20-50）。
                 4. **下载结果**：等进度条跑完，点击下载 Excel 即可。
                 """)
