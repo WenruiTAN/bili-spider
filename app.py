@@ -153,10 +153,10 @@ with main_col:
             "1. 粘贴你的 Cookie (可选)", 
             value=st.session_state.user_cookie,
             height=80, 
-            placeholder="留空则尝试公共通道。如搜索失败请填入自己账号的Cookies..."
+            placeholder="留空则尝试公共通道。如搜索失败请填入自己账号的 Cookie。"
         )
         
-        with st.expander("🔍 不知道怎么拿 Cookie？点击看保姆级教程"):
+        with st.expander("🔍 不知道怎么获取 Cookie？点击看保姆级教程"):
             st.markdown("""
             1. **登录**：电脑浏览器打开 B 站并登录。
             2. **检查**：右键 -> 检查 (F12)。
