@@ -26,6 +26,7 @@ def click_button():
     st.session_state.clicked = True
 
 # --- 3. 核心爬虫逻辑 ---
+@st.cache_data(show_spinner=False)  # ✨ 新增这一行，用于缓存抓取结果
 def run_bili_spider(kw, limit_pg, ck):
     all_videos = []
     headers = {
