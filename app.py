@@ -143,13 +143,24 @@ with main_col:
         st.button("🚀 开始精准抓取", use_container_width=True, on_click=click_button)
 
 # 情况 B：搜索结果页面
+# --- 4. 运行与展示 ---
+
+# 情况 B：搜索结果页面
 if st.session_state.clicked:
+    # --- 【新增】结果页顶部的返回导航 ---
+    top_back_col, _ = st.columns([1, 4])
+    with top_back_col:
+        if st.button("⬅️ 返回重新搜索", use_container_width=True):
+            st.session_state.clicked = False
+            st.rerun()
+    st.divider()
+
     final_ck = st.session_state.user_cookie.strip() if st.session_state.user_cookie.strip() else DEFAULT_COOKIE
     
     if not final_ck or final_ck == "在此粘贴你的默认Cookie":
         with main_col:
-            st.error("❌ 无法开始：请先配置 Cookie")
-            if st.button("⬅️ 返回修改"):
+            st.error("❌ 无法开始：请先配置有效的 Cookie")
+            if st.button("⬅️ 返回修改参数"):
                 st.session_state.clicked = False
                 st.rerun()
     else:
@@ -158,9 +169,10 @@ if st.session_state.clicked:
             df_final = run_bili_spider(st.session_state.keyword, st.session_state.max_pages, final_ck)
             
         if not df_final.empty:
-            st.success(f"🎊 抓取完成！去重后共获得 {len(df_final)} 条精准结果。")
+            st.success(f"🎊 抓取完成！共获得 {len(df_final)} 条结果。")
             st.dataframe(df_final, use_container_width=True)
             
+            # --- 下载与重置按钮并排 ---
             d_col, r_col = st.columns([3, 1])
             with d_col:
                 buffer = io.BytesIO()
@@ -178,8 +190,10 @@ if st.session_state.clicked:
                     st.session_state.clicked = False
                     st.rerun()
         else:
+            # --- 无结果时的返回处理 ---
             with main_col:
-                st.warning("🧐 未发现匹配结果。")
-                if st.button("⬅️ 返回"):
+                st.warning("🧐 抱歉，未发现匹配结果，请尝试更换关键词。")
+                if st.button("⬅️ 返回修改关键词"):
                     st.session_state.clicked = False
                     st.rerun()
+
