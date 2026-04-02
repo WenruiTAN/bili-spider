@@ -79,27 +79,59 @@ def run_bili_spider(kw, limit_pg, ck):
     return df
 
 # --- 4. 界面布局 ---
+# --- 4. 界面布局 ---
+# 注入自定义 CSS 以实现“蓝色便签纸”效果和统一标题
+st.markdown("""
+    <style>
+    /* 统一标题样式 */
+    .custom-header {
+        font-size: 28px !important;
+        font-weight: 700 !important;
+        color: #1E1E1E;
+        margin-bottom: 10px !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    /* 蓝色便签纸卡片 */
+    .note-card {
+        background-color: #E3F2FD;
+        border-left: 5px solid #2196F3;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+    }
+    .note-card p {
+        color: #0D47A1;
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 _, main_col, _ = st.columns([1, 2, 1])
 
 with main_col:
     if not st.session_state.clicked:
-        st.title("📺 Bilibili 搜索数据采集工具")
+        st.markdown('<div class="custom-header">📺 Bilibili 搜索数据采集工具</div>', unsafe_allow_html=True)
         
-        # A. 工具简介（保留你的微调）
+        # A. 工具简介（蓝色便签纸样式）
         st.markdown("""
-        ### 🛠️ 工具简介
-        这是一个专门帮大家在 B 站“捞数据”的省力工具。
-        
-        它只找标题里完全符合关键词的视频，自动过滤无关干扰。
-        """)
+            <div class="note-card">
+                <div style="font-size: 20px; font-weight: bold; color: #0D47A1; margin-bottom: 10px;">🛠️ 工具简介</div>
+                <p>这是一个专门帮大家在 B 站“捞数据”的省力工具。</p>
+                <p style="font-weight: 500;">✨ 它只找标题里完全符合关键词的视频，自动过滤无关干扰。</p>
+            </div>
+        """, unsafe_allow_html=True)
 
-        # B. 操作指南（保留你的微调）
+        # B. 操作指南
         with st.expander("📖 点击查看：操作指南 & 风险警示"):
             c_guide, c_warn = st.columns([2, 1])
             with c_guide:
                 st.markdown("""
                 **操作步骤：**
-                1. **填入 Cookie**：在下方框内粘贴。只要不点“退出登录”，这个CooKie就可以一直用，下次搜其他关键词时也不用换。
+                1. **填入 Cookie**：在下方框内粘贴。只要不点“退出登录”，这个CooKie就可以一直用。
                 2. **输入关键词**：输入你想搜的关键词。
                 3. **设定上限**：设一个最大爬取页数（建议 20-50）。
                 4. **下载结果**：等进度条跑完，点击下载 Excel 即可。
@@ -113,9 +145,11 @@ with main_col:
                 """)
 
         st.divider()
-        st.header("⚙️ 配置中心")
         
-        # C. Cookie 输入与教程（保留你的微调）
+        # 使用统一字号的配置中心标题
+        st.markdown('<div class="custom-header">⚙️ 配置中心</div>', unsafe_allow_html=True)
+        
+        # C. Cookie 输入与教程
         st.session_state.user_cookie = st.text_area(
             "1. 粘贴你的 Cookie (可选)", 
             value=st.session_state.user_cookie,
@@ -126,9 +160,9 @@ with main_col:
         with st.expander("🔍 不知道怎么拿 Cookie？点击看保姆级教程"):
             st.markdown("""
             1. **登录**：电脑浏览器打开 B 站并登录。
-            2. **检查**：在网页空白处**右键 -> 检查** (或按 F12)。
-            3. **刷新**：点顶部菜单的 **网络 (Network)**，然后 **刷新页面 (F5)**。
-            4. **复制**：在左侧列表找 **`nav`** 点击，右侧找到 **`cookie:`** 后面那一长串文字并全部复制。
+            2. **检查**：右键 -> 检查 (F12)。
+            3. **刷新**：点 **网络 (Network)** -> **刷新 (F5)**。
+            4. **复制**：找 **`nav`** 请求，复制 Headers 里的 **`cookie:`** 后面全部内容。
             """)
             
         # D. 搜索参数
@@ -141,6 +175,7 @@ with main_col:
         st.divider()
         st.button("🚀 开始精准抓取", use_container_width=True, on_click=click_button)
 
+# 情况 B：搜索结果页面逻辑保持不变...
 # 情况 B：搜索结果页面
 if st.session_state.clicked:
     # --- 顶部的返回导航 ---
