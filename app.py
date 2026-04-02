@@ -17,7 +17,7 @@ with st.sidebar:
     st.header("🔑 权限配置")
     user_cookie = st.text_area("粘贴你的 Cookie (可选)", height=100, placeholder="如果不填，将尝试使用内置公共通道...")
     
-    with st.expander("❓ 小白如何获取 Cookie？"):
+    with st.expander("❓ 如何获取 Cookie？"):
         st.markdown("""
         1. 在电脑浏览器打开 [Bilibili.com](https://www.bilibili.com) 并登录。
         2. 按下键盘上的 **F12**（或右键点击“检查”）。
