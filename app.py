@@ -7,15 +7,14 @@ import io
 import re
 
 # --- 1. 网页配置 ---
-st.set_page_config(page_title="B站数据抓取工具", layout="wide", page_icon="📺")
+st.set_page_config(page_title="B站数据精准抓取工具", layout="wide", page_icon="📺")
 
-# 💡 开发者预设 Cookie
+# 💡 开发者预设 Cookie（若有）
 DEFAULT_COOKIE = "在此粘贴你的默认Cookie"
 
-# --- 2. 初始化 Session State (解决 NameError 的关键) ---
+# --- 2. 初始化 Session State ---
 if 'clicked' not in st.session_state:
     st.session_state.clicked = False
-# 预设输入框的初始值
 if 'user_cookie' not in st.session_state:
     st.session_state.user_cookie = ""
 if 'keyword' not in st.session_state:
@@ -36,7 +35,7 @@ def run_bili_spider(kw, limit_pg, ck):
     }
     clean_kw = kw.replace('"', '').replace('“', '').replace('”', '')
     search_kw = f'"{clean_kw}"'
-    url = "https://api.api.bilibili.com/x/web-interface/search/type"
+    url = "https://api.bilibili.com/x/web-interface/search/type"
     
     progress_bar = st.progress(0, text="准备开始...")
     for p in range(1, limit_pg + 1):
@@ -70,7 +69,6 @@ def run_bili_spider(kw, limit_pg, ck):
             break
         progress_bar.progress(p / limit_pg, text=f"正在采集第 {p}/{limit_pg} 页...")
         time.sleep(random.uniform(0.6, 1.2))
-    
     progress_bar.empty()
     if not all_videos: return pd.DataFrame()
     df = pd.DataFrame(all_videos)
@@ -82,26 +80,23 @@ def run_bili_spider(kw, limit_pg, ck):
     return df
 
 # --- 4. 界面布局 ---
-
-# 使用 [1, 2, 1] 比例让输入框区域保持适中宽度，不分散
 _, main_col, _ = st.columns([1, 2, 1])
 
 with main_col:
-    # 情况 A：初始搜索页面（显示完整说明）
     if not st.session_state.clicked:
         st.title("📺 Bilibili 搜索数据导出助手")
         
-        # 还原完整的文字说明
-        # 还原最通俗易懂的文字说明
-        col_desc, col_warn = st.columns([2, 1])
-        with col_desc:
-            st.markdown("""
-            ### 🛠️ 工具简介
-            这是一个专门帮大家在 B 站“捞数据”的省力工具。
-            
-            它只找标题里完全符合关键词的视频，干扰项会被自动过滤。
-            
-           # B. 操作指南（折叠框）
+        # A. 工具简介（直接展示）
+        st.markdown("""
+        ### 🛠️ 工具简介
+        这是一个专门帮大家**在 B 站“捞数据”**的省力工具。
+        
+        * **找得准**：只找标题里完全符合关键词的视频，自动过滤无关干扰。
+        * **不费劲**：不用数页数，程序会自动搜到最后一页并收工。
+        * **好上手**：导出 Excel 是**“纯数字版”**，点一下表头就能直接排序。
+        """)
+
+        # B. 操作指南（折叠框）
         with st.expander("📖 点击查看：操作指南 & 风险警示"):
             c_guide, c_warn = st.columns([2, 1])
             with c_guide:
@@ -112,42 +107,34 @@ with main_col:
                 3. **设定上限**：设一个最大爬取页数（建议 20-50）。
                 4. **下载结果**：等进度条跑完，点击下载 Excel 即可。
                 """)
-            
-        with col_warn:
-            st.warning("""
-            ### ⚠️ Cookie 风险警示
-            - 请妥善保管您的 Cookie，切勿泄露。
-            - 建议使用 B 站小号进行高频次抓取。
-            - 本工具仅供公司内部业务研究使用。
-            """)
+            with c_warn:
+                st.warning("""
+                **安全提醒：**
+                - 请妥善保管 Cookie。
+                - 建议使用 B 站小号。
+                - 仅供内部业务研究。
+                """)
 
         st.divider()
-
         st.header("⚙️ 配置中心")
         
-        # Cookie 输入区
+        # C. Cookie 输入与教程（折叠框）
         st.session_state.user_cookie = st.text_area(
             "1. 粘贴你的 Cookie (可选)", 
             value=st.session_state.user_cookie,
-            height=100, 
-            placeholder="只要不点 B 站的“退出登录”，这串Cookie就可以一直使用，搜索其他关键词时也不用换。"
+            height=80, 
+            placeholder="留空则尝试公共通道..."
         )
         
-        with st.expander("🔍 点击查看：超详细的 Cookie 获取教程", expanded=False):
+        with st.expander("🔍 不知道怎么拿 Cookie？点击看保姆级教程"):
             st.markdown("""
-            ### 4步拿走 Cookie：
-            1. **登录**：在电脑打开 B 站并登录。
+            1. **登录**：电脑浏览器打开 B 站并登录。
             2. **检查**：在网页空白处**右键 -> 检查** (或按 F12)。
             3. **刷新**：点顶部菜单的 **网络 (Network)**，然后 **刷新页面 (F5)**。
-            4. **复制**：在左侧列表找 **`nav`** 点击，右侧找 **`cookie:`** 后面那一长串文字。
-            
-            ---
-            **💡 小贴士**：
-            * 如果没看到 `nav`，可以在搜索框输入 `nav` 过滤一下。
-            * 复制时记得从 `_uuid=...` 一直拉到最后，全部都要。
+            4. **复制**：在左侧列表找 **`nav`** 点击，右侧找到 **`cookie:`** 后面那一长串文字并全部复制。
             """)
             
-        # 搜索参数区
+        # D. 搜索参数
         col1, col2 = st.columns([2, 1])
         with col1:
             st.session_state.keyword = st.text_input("2. 搜索关键词", value=st.session_state.keyword)
@@ -157,9 +144,8 @@ with main_col:
         st.divider()
         st.button("🚀 开始精准抓取", use_container_width=True, on_click=click_button)
 
-# 情况 B：搜索结果页面（隐藏说明，全屏展示结果）
+# 情况 B：搜索结果页面
 if st.session_state.clicked:
-    # 确定最终 Cookie
     final_ck = st.session_state.user_cookie.strip() if st.session_state.user_cookie.strip() else DEFAULT_COOKIE
     
     if not final_ck or final_ck == "在此粘贴你的默认Cookie":
@@ -169,28 +155,23 @@ if st.session_state.clicked:
                 st.session_state.clicked = False
                 st.rerun()
     else:
-        # 结果页标题
-        st.title(f"🔍 正在检索关键词: {st.session_state.keyword}")
-        
+        st.title(f"🔍 正在检索: {st.session_state.keyword}")
         with st.spinner('正在为您筛选最精准的数据...'):
             df_final = run_bili_spider(st.session_state.keyword, st.session_state.max_pages, final_ck)
             
         if not df_final.empty:
             st.success(f"🎊 抓取完成！去重后共获得 {len(df_final)} 条精准结果。")
-            
-            # 展示数据表格
             st.dataframe(df_final, use_container_width=True)
             
-            # 下载与操作按钮
             d_col, r_col = st.columns([3, 1])
             with d_col:
                 buffer = io.BytesIO()
                 with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
                     df_final.to_excel(writer, index=False, sheet_name='B站数据')
                 st.download_button(
-                    label="📥 下载 Excel 结果文件 (可直接排序)",
+                    label="📥 下载 Excel 结果文件",
                     data=buffer.getvalue(),
-                    file_name=f"B站_{st.session_state.keyword}_导出结果.xlsx",
+                    file_name=f"B站_{st.session_state.keyword}_导出.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     use_container_width=True
                 )
@@ -200,7 +181,7 @@ if st.session_state.clicked:
                     st.rerun()
         else:
             with main_col:
-                st.warning("🧐 抓取结束，但未发现符合精准关键词的结果。")
-                if st.button("⬅️ 返回修改"):
+                st.warning("🧐 未发现匹配结果。")
+                if st.button("⬅️ 返回"):
                     st.session_state.clicked = False
                     st.rerun()
